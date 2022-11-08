@@ -13,11 +13,44 @@ app.use(express.json());
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.4k7t9co.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
-client.connect(err => {
-  const collection = client.db("test").collection("devices");
-  // perform actions on the collection object
-  client.close();
-});
+
+async function run() {
+
+  try {
+    const bannersCollection = client.db("ResidentialPlumber").collection("banners");
+    const servicesCollection = client.db("ResidentialPlumber").collection("services");
+
+    // Get All Banners Data
+    app.get('/banners', async (req, res) => {
+      const cursor = bannersCollection.find({});
+      const result = await cursor.toArray();
+      res.send(result);
+
+    })
+
+
+    // Get All Services Data
+
+    app.get('/services', async (req, res) => {
+      const cursor = servicesCollection.find({});
+      const result = await cursor.toArray();
+      res.send(result);
+
+    })
+
+
+
+
+
+
+
+
+  } finally {
+    //   await client.close();
+  }
+}
+run().catch(console.dir);
+
 
 app.get('/', (req, res) => {
   res.send('Assignment 11 server is running')
