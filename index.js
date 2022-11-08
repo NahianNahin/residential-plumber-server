@@ -37,7 +37,14 @@ async function run() {
       res.send(result);
 
     })
-
+    
+    // Get selected Services Data by id
+    app.get('/services/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const selectedService = await servicesCollection.findOne(query);
+      res.send(selectedService);
+  })
 
 
 
