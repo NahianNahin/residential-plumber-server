@@ -20,10 +20,18 @@ async function run() {
     const bannersCollection = client.db("ResidentialPlumber").collection("banners");
     const servicesCollection = client.db("ResidentialPlumber").collection("services");
     const reviewsCollection = client.db("ResidentialPlumber").collection("reviews");
+    const blogsCollection = client.db("ResidentialPlumber").collection("blogs");
 
     // Get All Banners Data
     app.get('/banners', async (req, res) => {
       const cursor = bannersCollection.find({});
+      const result = await cursor.toArray();
+      res.send(result);
+
+    })
+    // Get All Blogs Data
+    app.get('/blogs', async (req, res) => {
+      const cursor = blogsCollection.find({});
       const result = await cursor.toArray();
       res.send(result);
 
