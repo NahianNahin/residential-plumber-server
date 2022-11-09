@@ -46,7 +46,12 @@ async function run() {
       const selectedService = await servicesCollection.findOne(query);
       res.send(selectedService);
     })
-
+    // Service Post
+    app.post('/service', async (req, res) => {
+      const service = req.body;
+      const services = await servicesCollection.insertOne(service);
+      res.send(services);
+    })
     // Get All Review Data
 
     app.get('/reviews', async (req, res) => {
@@ -57,7 +62,7 @@ async function run() {
 
     })
     // Get Review by Id
-    app.get('/review/:id',async(req,res) => {
+    app.get('/review/:id', async (req, res) => {
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
       const selectedReview = await reviewsCollection.findOne(query);
