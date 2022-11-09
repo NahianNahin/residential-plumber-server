@@ -57,7 +57,32 @@ async function run() {
 
     })
 
+    // Get Reviews data by User Email 
+    app.get('/review', async (req, res) => {
+      let query = {};
+      const selectedEmail = req.query.email;
+      if (selectedEmail) {
+        query = {
+          email: selectedEmail,
+        }
+      }
+      const result = await reviewsCollection.find(query).sort({ date: -1 }).toArray();
+      res.send(result);
+    })
 
+    // Get Reviews data by User Email 
+
+    app.get('/service_review', async (req, res) => {
+      let query = {};
+      const selectedService = req.query.service;
+      if (selectedService) {
+        query = {
+          service: selectedService,
+        }
+        const result = await reviewsCollection.find(query).sort({ date: -1 }).toArray();
+        res.send(result);
+      }
+    })
 
     // Review Post
     app.post('/reviews', async (req, res) => {
