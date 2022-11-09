@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express();
 require('dotenv').config();
 const port = process.env.PORT || 5000;
@@ -19,6 +19,7 @@ async function run() {
   try {
     const bannersCollection = client.db("ResidentialPlumber").collection("banners");
     const servicesCollection = client.db("ResidentialPlumber").collection("services");
+    const reviewsCollection = client.db("ResidentialPlumber").collection("reviews");
 
     // Get All Banners Data
     app.get('/banners', async (req, res) => {
@@ -37,7 +38,7 @@ async function run() {
       res.send(result);
 
     })
-    
+
     // Get selected Services Data by id
     app.get('/services/:id', async (req, res) => {
       const id = req.params.id;
@@ -46,7 +47,12 @@ async function run() {
       res.send(selectedService);
   })
 
-
+  // Order Post
+  app.post('/reviews', async (req, res) => {
+    const review = req.body;
+    const reviews = await reviewsCollection.insertOne(review);
+    res.send(reviews);
+})
 
 
 
