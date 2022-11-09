@@ -45,14 +45,26 @@ async function run() {
       const query = { _id: ObjectId(id) };
       const selectedService = await servicesCollection.findOne(query);
       res.send(selectedService);
-  })
+    })
 
-  // Order Post
-  app.post('/reviews', async (req, res) => {
-    const review = req.body;
-    const reviews = await reviewsCollection.insertOne(review);
-    res.send(reviews);
-})
+    // Get All Review Data
+
+    app.get('/reviews', async (req, res) => {
+      let mysort = { date: -1 };
+      const cursor = reviewsCollection.find({}).sort(mysort);
+      const result = await cursor.toArray();
+      res.send(result);
+
+    })
+
+
+
+    // Review Post
+    app.post('/reviews', async (req, res) => {
+      const review = req.body;
+      const reviews = await reviewsCollection.insertOne(review);
+      res.send(reviews);
+    })
 
 
 
