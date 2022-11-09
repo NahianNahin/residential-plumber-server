@@ -56,7 +56,14 @@ async function run() {
       res.send(result);
 
     })
+    // Get Review by Id
+    app.get('/review/:id',async(req,res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const selectedReview = await reviewsCollection.findOne(query);
+      res.send(selectedReview);
 
+    })
     // Get Reviews data by User Email 
     app.get('/review', async (req, res) => {
       let query = {};
@@ -91,7 +98,33 @@ async function run() {
       res.send(reviews);
     })
 
+    // Delete Review
 
+    app.delete('/review/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) }
+      const result = await reviewsCollection.deleteOne(query);
+      res.send(result);
+    })
+
+    // Update Product
+    app.put('/reviews/:id', async (req, res) => {
+      const id = req.params.id;
+      const updatedReviewDetail = req.body;
+      console.log(id);
+      const query = { _id: ObjectId(id) };
+      const options = { upsert: true };
+      const updateReview = {
+        $set: {
+          date: updatedReviewDetail.date,
+          review: updatedReviewDetail.review,
+          rating: updatedReviewDetail.rating,
+        },
+      };
+      const result = await reviewsCollection.updateOne(query, updateReview, options);
+      res.send(result);
+
+    });
 
 
 
