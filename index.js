@@ -90,7 +90,7 @@ async function run() {
     })
     // Get All Review Data
 
-    app.get('/reviews', verifyJWT, async (req, res) => {
+    app.get('/reviews',  async (req, res) => {
       let mysort = { date: -1 };
       const cursor = reviewsCollection.find({}).sort(mysort);
       const result = await cursor.toArray();
@@ -98,7 +98,7 @@ async function run() {
 
     })
     // Get Review by Id
-    app.get('/review/:id', verifyJWT, async (req, res) => {
+    app.get('/review/:id',  async (req, res) => {
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
       const selectedReview = await reviewsCollection.findOne(query);
@@ -118,9 +118,9 @@ async function run() {
       res.send(result);
     })
 
-    // Get Reviews data by User Email 
+    // Get Reviews data by Service 
 
-    app.get('/service_review', verifyJWT, async (req, res) => {
+    app.get('/service_review', async (req, res) => {
       let query = {};
       const selectedService = req.query.service;
       if (selectedService) {
